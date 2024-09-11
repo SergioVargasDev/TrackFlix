@@ -59,8 +59,12 @@ const RootComponent = () => {
         />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Home route only for logged-in users */}
-        <Route path="/home" element={<App />} />
+        {/* <Route path="/home" element={<App /> */}
+
+        <Route
+          path="/home"
+          element={isLoggedIn ? <App /> : <Navigate to="/login" />}
+        />
       </Routes>
     </Router>
   );
