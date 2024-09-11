@@ -18,17 +18,6 @@ export default function App() {
 
   const [watched, setWatched] = useLocalStorageState([], "watched");
 
-  // const [watched, setWatched] = useState(function () {
-  //   const storedValue = localStorage.getItem("watched");
-  //   return JSON.parse(storedValue);
-  // });
-
-  // useEffect(function () {
-  //   fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=interstellar`)
-  //     .then((res) => res.json())
-  //     .then((data) => setMovies(data.Search));
-  // }, []); //data fetching in simple react applications
-
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
   }
