@@ -25,6 +25,7 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
       ) // withCredentials is necessary for sending cookies
       .then((result) => {
         if (result.data === "Success") {
+          localStorage.setItem("userEmail", email);  // Store user's email
           setIsLoggedIn(true);
           navigate("/home");
         } else {

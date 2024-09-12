@@ -22,6 +22,7 @@ function SignUp() {
       .post("http://localhost:3001/signup", { name, email, password })
       .then((result) => {
         if (result.status === 201) {
+          localStorage.setItem("userEmail", email);  // Store user's email on signup success
           navigate("/login");
         }
       })
