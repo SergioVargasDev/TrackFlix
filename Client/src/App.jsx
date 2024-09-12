@@ -27,13 +27,48 @@ export default function App({ setIsLoggedIn }) {
     setSelectedId(null);
   }
 
-  function handleAddWatched(movie) {
-    setWatched((watched) => [...watched, movie]);
-  }
+  useEffect(() => {
+    const email = localStorage.getItem("userEmail");
+    fetch(`http://localhost:3001/user-movies?email=${email}`)
+      .then((response) => response.json())
+      .then((watchedMovies) => {
+        setWatched(watchedMovies);  // Set watched movies list
+      })
+      .catch((error) => console.error("Error fetching movies:", error));
+  }, [setWatched]); // Add setWatched to the dependency array
+  
 
-  function handleDeleteWatched(id) {
-    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  function handleAddWatched(movie) {
+    const email = localStorage.getItem("userEmail");
+    console.log(email, movie);  // Debug: Check email and movie
+    fetch("http://localhost:3001/add-movie", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, movie })
+    })
+      .then((response) => response.json())
+      .then((updatedWatchedMovies) => {
+        setWatched(updatedWatchedMovies);
+      })
+      .catch((error) => console.error("Error adding movie:", error));
   }
+  
+  
+
+  function handleDeleteWatched(imdbID) {
+    const email = localStorage.getItem("userEmail");  // Assuming you store the email after login
+    fetch("http://localhost:3001/remove-movie", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, imdbID })
+    })
+      .then((response) => response.json())
+      .then((updatedWatchedMovies) => {
+        setWatched(updatedWatchedMovies);  // Update local watched list
+      })
+      .catch((error) => console.error("Error removing movie:", error));
+  }
+  
 
   return (
     <>
@@ -197,17 +232,16 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 
   const countRef = useRef(0);
 
-  useEffect(
-    function () {
-      if (userRating) countRef.current = countRef.current + 1;
-    },
-    [userRating]
-  );
+  useEffect(() => {
+    if (userRating) countRef.current += 1;
+  }, [userRating]);
 
-  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
-  const watchedUserRating = watched.find(
-    (movie) => movie.imdbID === selectedId
-  )?.userRating;
+  // Ensure watched is an array before using .map()
+  const isWatched = Array.isArray(watched) && watched.some((movie) => movie.imdbID === selectedId);
+  const watchedUserRating = Array.isArray(watched)
+    ? watched.find((movie) => movie.imdbID === selectedId)?.userRating
+    : null;
+
   const {
     Title: title,
     Year: year,
@@ -236,33 +270,27 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     onCloseMovie();
   }
 
-  useEffect(
-    function () {
-      async function getMovieDetails() {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
-        );
-        const data = await res.json();
-        setMovie(data);
-        setIsLoading(false);
-      }
-      getMovieDetails();
-    },
-    [selectedId]
-  );
+  useEffect(() => {
+    async function getMovieDetails() {
+      setIsLoading(true);
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
+      );
+      const data = await res.json();
+      setMovie(data);
+      setIsLoading(false);
+    }
+    getMovieDetails();
+  }, [selectedId]);
 
-  useEffect(
-    function () {
-      if (!title) return;
-      document.title = `Movie | ${title} `;
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title} `;
 
-      return function () {
-        document.title = "getUrPopcorn";
-      };
-    },
-    [title]
-  );
+    return function () {
+      document.title = "getUrPopcorn";
+    };
+  }, [title]);
 
   useKey("Escape", onCloseMovie);
 
@@ -325,7 +353,10 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   );
 }
 
+
 function WatchedSummary({ watched }) {
+  if (!Array.isArray(watched)) return null; // Add this guard to ensure watched is an array
+
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
@@ -355,6 +386,8 @@ function WatchedSummary({ watched }) {
 }
 
 function WatchedMoviesList({ watched, onDeleteWatched }) {
+  if (!Array.isArray(watched)) return null; // Guard against non-array
+
   return (
     <ul className="list">
       {watched.map((movie) => (

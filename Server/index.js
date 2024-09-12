@@ -106,3 +106,49 @@ app.get("/user", (req, res) => {
     res.status(401).json("Not authenticated");
   }
 });
+
+
+app.post("/add-movie", async (req, res) => {
+  const { email, movie } = req.body;
+  try {
+    // Find the user by email and update their watched movies list
+    const user = await UserModel.findOneAndUpdate(
+      { email },
+      { $push: { watchedMovies: movie } },
+      { new: true }
+    );
+    console.log(user);  // Debug: Check if user is found and updated
+    res.status(200).json(user.watchedMovies);
+  } catch (error) {
+    console.error("Error adding movie to DB:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.post("/remove-movie", async (req, res) => {
+  const { email, imdbID } = req.body;  // The frontend will send the email and movie's imdbID
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { email },
+      { $pull: { watchedMovies: { imdbID } } },
+      { new: true }
+    );
+    res.status(200).json(user.watchedMovies);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/user-movies", async (req, res) => {
+  const { email } = req.query;
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json([]);
+    }
+    res.status(200).json(user.watchedMovies || []);  // Always return an array
+  } catch (error) {
+    res.status(500).json([]);  // Return an empty array in case of error
+  }
+});
