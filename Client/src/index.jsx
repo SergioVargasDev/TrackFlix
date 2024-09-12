@@ -39,14 +39,12 @@ const RootComponent = () => {
 
   return (
     <Router>
-      {/* Conditionally render NavBarAuth */}
       <ConditionalNavBar
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
       />
 
       <Routes>
-        {/* Redirect to /home if logged in */}
         <Route
           path="/"
           element={
@@ -58,8 +56,6 @@ const RootComponent = () => {
           element={<Login setIsLoggedIn={setIsLoggedIn} />}
         />
         <Route path="/signup" element={<SignUp />} />
-
-        {/* <Route path="/home" element={<App /> */}
 
         <Route
           path="/home"
