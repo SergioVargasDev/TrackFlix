@@ -38,7 +38,6 @@ function SignUp() {
     margin: "100px auto",
     borderRadius: "1rem",
     boxShadow: "10px 10px 10px",
-    height: "40rem",
   };
   const heading = { fontSize: "2.5rem", fontWeight: "600" };
   const row = { display: "flex", marginTop: "2rem" };
