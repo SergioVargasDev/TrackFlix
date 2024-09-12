@@ -46,9 +46,16 @@ body {
   border-radius: 0.9rem;
 }
 
+.nav-bar-logout {
+  display: flex;
+  flex-direction: row-reverse;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  height: 4rem;
+}
 .main {
   margin-top: 2.4rem;
-  height: calc(100vh - 18rem - 3 * 2.4rem);
+  height: calc(100vh - 22rem - 3 * 2.4rem);
   display: flex;
   gap: 2.4rem;
   justify-content: center;

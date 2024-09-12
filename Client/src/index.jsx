@@ -59,7 +59,13 @@ const RootComponent = () => {
 
         <Route
           path="/home"
-          element={isLoggedIn ? <App /> : <Navigate to="/login" />}
+          element={
+            isLoggedIn ? (
+              <App setIsLoggedIn={setIsLoggedIn} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
       </Routes>
     </Router>

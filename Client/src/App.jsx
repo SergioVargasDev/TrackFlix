@@ -3,13 +3,14 @@ import StarRating from "./StarRating";
 import { useMovies } from "./useMovies";
 import { useLocalStorageState } from "./useLocalSTG";
 import { useKey } from "./useKey";
+import Logout from "./Logout";
 
 const KEY = "ef1c10ab";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-export default function App() {
+export default function App({ setIsLoggedIn }) {
   const [query, setQuery] = useState("");
 
   const [selectedId, setSelectedId] = useState(null);
@@ -36,8 +37,10 @@ export default function App() {
 
   return (
     <>
+      <LogoutLayout setIsLoggedIn={setIsLoggedIn} />
       <NavBar>
         <Logo />
+
         <Search query={query} setQuery={setQuery} />
         <Numresults movies={movies} />
       </NavBar>
@@ -81,6 +84,13 @@ export default function App() {
     </>
   );
 }
+function LogoutLayout({ setIsLoggedIn }) {
+  return (
+    <nav className="nav-bar-logout">
+      <Logout setIsLoggedIn={setIsLoggedIn} /> {/* Add Logout button here */}
+    </nav>
+  );
+}
 
 function SelectMovie() {
   return (
@@ -102,9 +112,14 @@ function ErrorMessage({ message }) {
   );
 }
 
+// function NavBar({ children }) {
+//   return <nav className="nav-bar">{children}</nav>;
+// }
+
 function NavBar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
 }
+
 function Logo() {
   return (
     <div className="logo">

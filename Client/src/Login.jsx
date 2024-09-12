@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Grid, Link, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Grid,
+  Link,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 function Login({ setIsLoggedIn, isLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -11,7 +18,11 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/login", { email, password }, { withCredentials: true }) // withCredentials is necessary for sending cookies
+      .post(
+        "http://localhost:3001/login",
+        { email, password },
+        { withCredentials: true }
+      ) // withCredentials is necessary for sending cookies
       .then((result) => {
         if (result.data === "Success") {
           setIsLoggedIn(true);
@@ -26,20 +37,45 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
       });
   };
 
-  const paperStyle = { padding: "2rem", margin: "100px auto", borderRadius: "1rem", boxShadow: "10px 10px 10px" };
+  const paperStyle = {
+    padding: "2rem",
+    margin: "100px auto",
+    borderRadius: "1rem",
+    boxShadow: "10px 10px 10px",
+  };
   const heading = { fontSize: "2.5rem", fontWeight: "600" };
   const row = { display: "flex", marginTop: "2rem" };
-  const btnStyle = { marginTop: "2rem", fontSize: "1.2rem", fontWeight: "700", backgroundColor: "blue", borderRadius: "0.5rem" };
+  const btnStyle = {
+    marginTop: "2rem",
+    fontSize: "1.2rem",
+    fontWeight: "700",
+    backgroundColor: "blue",
+    borderRadius: "0.5rem",
+  };
 
   return (
     <div>
       <Grid align="center" className="wrapper">
-        <Paper style={paperStyle} sx={{ width: { xs: '80vw', sm: '50vw', md: '40vw', lg: '30vw', xl: '20vw' }, height: { lg: '50vh' } }}>
-          <Typography component="h1" variant="h5" style={heading}>Login</Typography>
+        <Paper
+          style={paperStyle}
+          sx={{
+            width: {
+              xs: "80vw",
+              sm: "50vw",
+              md: "40vw",
+              lg: "30vw",
+              xl: "20vw",
+            },
+            height: { lg: "50vh" },
+          }}
+        >
+          <Typography component="h1" variant="h5" style={heading}>
+            Login
+          </Typography>
           <form onSubmit={handleLogin}>
             <span style={row}>
               <TextField
-                sx={{ label: { fontWeight: '700', fontSize: "1.3rem" } }}
+                sx={{ label: { fontWeight: "700", fontSize: "1.3rem" } }}
                 label="Email"
                 fullWidth
                 variant="outlined"
@@ -51,7 +87,7 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
             </span>
             <span style={row}>
               <TextField
-                sx={{ label: { fontWeight: '700', fontSize: "1.3rem" } }}
+                sx={{ label: { fontWeight: "700", fontSize: "1.3rem" } }}
                 label="Password"
                 fullWidth
                 variant="outlined"
@@ -61,9 +97,13 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </span>
-            <Button style={btnStyle} variant="contained" type="submit">Login</Button>
+            <Button style={btnStyle} variant="contained" type="submit">
+              Login
+            </Button>
           </form>
-          <p>Don't have an account? <Link href="/signup">SignUp</Link></p>
+          <p>
+            Don't have an account? <Link href="/signup">SignUp</Link>
+          </p>
         </Paper>
       </Grid>
     </div>
