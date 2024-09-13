@@ -41,9 +41,14 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Failed to connect to MongoDB", err));
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+
+// Use Render's PORT or default to 3001 for local development
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
 
 // Signup route
 app.post("/signup", async (req, res) => {
