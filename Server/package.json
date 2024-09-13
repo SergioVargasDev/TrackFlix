@@ -23,6 +23,8 @@
     "express-session": "^1.18.0",
     "mongodb": "^5.9.2",
     "mongoose": "^6.7.1",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "binary": "^0.3.0"
+
   }
 }
