@@ -291,7 +291,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     document.title = `Movie | ${title} `;
 
     return function () {
-      document.title = "getUrPopcorn";
+      document.title = "TrackFlix";
     };
   }, [title]);
 
