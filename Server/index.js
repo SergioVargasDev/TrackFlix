@@ -15,10 +15,11 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,  // Now uses the environment variable
-    credentials: true,  // Required to send cookies from frontend to backend
+    origin: "https://track-flix-client.vercel.app", // Replace with your Vercel frontend URL
+    credentials: true,  // Allows cookies to be sent along with requests
   })
 );
+
 
 
 // Configure session middleware
