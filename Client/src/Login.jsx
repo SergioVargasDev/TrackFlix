@@ -18,11 +18,13 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post(
-        "http://localhost:3001/login",
-        { email, password },
-        { withCredentials: true }
-      ) // withCredentials is necessary for sending cookies
+    .post(
+      `${process.env.REACT_APP_BACKEND_URL}/login`,  // Correct: Use backticks and template literals
+      { email, password },
+      { withCredentials: true }
+    )
+    
+
       .then((result) => {
         if (result.data === "Success") {
           localStorage.setItem("userEmail", email);  // Store user's email
