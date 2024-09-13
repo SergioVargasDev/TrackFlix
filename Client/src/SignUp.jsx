@@ -19,7 +19,7 @@ function SignUp() {
   const handleSignup = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/signup", { name, email, password })
+    .post(`${process.env.REACT_APP_BACKEND_URL}/signup`, { name, email, password })  // Use template literalsK
       .then((result) => {
         if (result.status === 201) {
           localStorage.setItem("userEmail", email);  // Store user's email on signup success

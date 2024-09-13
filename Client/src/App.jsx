@@ -29,8 +29,8 @@ export default function App({ setIsLoggedIn }) {
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
-    fetch(`http://localhost:3001/user-movies?email=${email}`)
-      .then((response) => response.json())
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/user-movies?email=${email}`)
+    .then((response) => response.json())
       .then((watchedMovies) => {
         setWatched(watchedMovies);  // Set watched movies list
       })
@@ -41,7 +41,9 @@ export default function App({ setIsLoggedIn }) {
   function handleAddWatched(movie) {
     const email = localStorage.getItem("userEmail");
     console.log(email, movie);  // Debug: Check email and movie
-    fetch("http://localhost:3001/add-movie", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/add-movie`, 
+      {
+      
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, movie })
@@ -57,7 +59,8 @@ export default function App({ setIsLoggedIn }) {
 
   function handleDeleteWatched(imdbID) {
     const email = localStorage.getItem("userEmail");  // Assuming you store the email after login
-    fetch("http://localhost:3001/remove-movie", {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/remove-movie`, 
+      {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, imdbID })

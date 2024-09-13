@@ -13,10 +13,11 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // Your frontend URL
-    credentials: true, // This is necessary to allow sending cookies from frontend to backend
+    origin: process.env.FRONTEND_URL,  // Now uses the environment variable
+    credentials: true,  // Required to send cookies from frontend to backend
   })
 );
+
 
 // Configure session middleware
 app.use(
