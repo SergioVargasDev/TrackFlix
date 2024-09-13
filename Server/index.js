@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const UserModel = require("./model/User");
-const common = require('debug/src/common');
+const common = require('./common');
 
 
 dotenv.config();
